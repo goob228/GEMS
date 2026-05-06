@@ -2,14 +2,14 @@
 
 
 
-void EventHandler::handleEvent(sf::RenderWindow* window)
+void EventHandler::handleEvent(WindowHandler& window_handler)
 {   
 
     sf::Event event;
 
-    while (window->pollEvent(event)) {
+    while (window_handler.window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            window->close();
+            window_handler.window->close();
         }
     }
 

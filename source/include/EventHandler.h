@@ -1,10 +1,13 @@
-#ifndef EVENTHANDLERH
-#define EVENTHANDLERH
+#ifndef EVENTHANDLER_H
+#define EVENTHANDLER_H
 
 #include "SFML/Graphics.hpp"
-#include "SFML/Window/Event.hpp"
+#include "WindowHandler.h"
 
 
+enum class Event{
+    CloseWindow
+};
 
 
 class EventHandler{
@@ -12,7 +15,7 @@ class EventHandler{
 public:
 
 
-    static void handleEvent(sf::RenderWindow* window);
+    static void handleEvent(WindowHandler& window_handler);
 
 
 };

@@ -1,5 +1,5 @@
-#ifndef GAMEH
-#define GAMEH
+#ifndef GAME_H
+#define GAME_H
 #include "WindowHandler.h"
 #include "EventHandler.h"
 

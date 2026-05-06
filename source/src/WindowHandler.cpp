@@ -29,9 +29,9 @@ void WindowHandler::render()
 
 WindowHandler::WindowHandler()
 {
-    m_window = new sf::RenderWindow(sf::VideoMode({800, 600}), "SFML Window");
+    window = new sf::RenderWindow(sf::VideoMode({800, 600}), "SFML Window");
 }
 WindowHandler::~WindowHandler()
 {
-    delete m_window;
+    delete window;
 }

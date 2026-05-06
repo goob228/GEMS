@@ -10,11 +10,11 @@ void Game::gameLoop()
     int i = 0;
     while (running) {
 
-        if (!window_handler.m_window->isOpen()) {
+        if (!window_handler.window->isOpen()) {
             running = false;
         }
 
-        EventHandler::handleEvent(window_handler.m_window);
+        EventHandler::handleEvent(window_handler);
         window_handler.render();
 
 

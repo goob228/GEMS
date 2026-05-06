@@ -1,5 +1,5 @@
-#ifndef WINDOWHANDLERH
-#define WINDOWHANDLERH
+#ifndef WINDOWHANDLER_H
+#define WINDOWHANDLER_H
 
 #include "SFML/Graphics.hpp"
 
@@ -14,7 +14,7 @@ public:
     WindowHandler();
     ~WindowHandler();
 
-    sf::RenderWindow* m_window;
+    sf::RenderWindow* window;
 
     void render();
 

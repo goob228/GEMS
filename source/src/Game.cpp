@@ -2,7 +2,6 @@
 
 
 
-
 void Game::gameLoop()
 {
 
@@ -11,13 +10,15 @@ void Game::gameLoop()
     int i = 0;
     while (running) {
 
-        window.render();
-
-
-        i++;
-        if (i > 5) {
+        if (!window_handler.m_window->isOpen()) {
             running = false;
         }
+
+        EventHandler::handleEvent(window_handler.m_window);
+        window_handler.render();
+
+
+        
     }
 
 

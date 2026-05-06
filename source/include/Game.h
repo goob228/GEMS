@@ -1,6 +1,7 @@
 #ifndef GAMEH
 #define GAMEH
-#include "window.h"
+#include "WindowHandler.h"
+#include "EventHandler.h"
 
 
 class Game {
@@ -16,7 +17,8 @@ private:
 
     bool running;
     
-    Window window;
+    WindowHandler window_handler;
+    
 
 
     //void fillBoard();

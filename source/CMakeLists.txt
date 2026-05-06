@@ -1,26 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
-project(GEMS)
+project(GEMS VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(SFML 3.1 COMPONENTS Graphics Window System REQUIRED)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_executable(GEMS
-    main.cpp
-    Gem.cpp
-    window.cpp
-    Game.cpp
 
-    Gem.h
-    window.h
-    Game.h
+find_package(SFML 2.6 COMPONENTS system window graphics audio network REQUIRED)
+
+file(GLOB_RECURSE SRC_FILES src/*.cpp)
+
+add_executable(GEMS ${SRC_FILES})
+
+
+
+target_link_libraries(GEMS 
+    sfml-system
+    sfml-window
+    sfml-graphics
+    sfml-audio
+    sfml-network
 )
 
-target_include_directories(GEMS PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-target_link_libraries(GEMS
-    SFML::Graphics
-    SFML::Window
-    SFML::System
-)

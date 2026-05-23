@@ -2,16 +2,28 @@
 
 
 
-void EventHandler::handleEvents(WindowHandler& window_handler)
+void EventHandler::handleEvents(WindowHandler* windowHandler)
 {   
 
     sf::Event event;
 
-    while (window_handler.window->pollEvent(event)) {
+    while (windowHandler->_window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            window_handler.window->close();
-            events.push_back(Event::Close_Window);
+            _events.push_back(Event::CLOSE_WINDOW);
+        }   
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (event.mouseButton.button == sf::Mouse::Left) //specifies
+            {
+                _events.push_back(Event::CLICK_MOUSE);
+            }   
         }
     }
+}
 
+iVector2 EventHandler::getMousePos(WindowHandler* windowHandler)
+{
+    iVector2 pos = sf::Mouse::getPosition(*(windowHandler->_window));
+
+    return pos;
 }

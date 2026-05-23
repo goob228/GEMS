@@ -1,11 +1,30 @@
 #include "WindowHandler.h"
 
-#ifndef NDEBUG
-#include <iostream>
-#endif
 
 
+WindowHandler::WindowHandler()
+{
+    _width = 500;
+    _height = 500;
+    createWindow();
+}
 
+WindowHandler::WindowHandler(unsigned int const width = 500, unsigned int const height = 500)
+{
+    _width = width;
+    _height = height;
+    createWindow();
+}
+
+
+WindowHandler::~WindowHandler()
+{
+    if (_window) {
+        _window->close();
+    }
+    delete _window;
+    _window = nullptr;
+}
 
 
 
@@ -13,28 +32,18 @@ void WindowHandler::render()
 {
 
 
-#ifdef _DEBUG
-    std::cout << 1 << std::endl;
-#endif
-
-    window->clear();
-        
+    _window->clear();
 
 
 
 }
 
-
-
-
-
-
-
-WindowHandler::WindowHandler()
+void WindowHandler::createWindow()
 {
-    window = new sf::RenderWindow(sf::VideoMode({800, 600}), "SFML Window");
+    assert(_width);
+    assert(_height);
+    _window = new sf::RenderWindow(sf::VideoMode({_width, _height}), "SFML Window");
+    assert(_window);
 }
-WindowHandler::~WindowHandler()
-{
-    delete window;
-}
+
+

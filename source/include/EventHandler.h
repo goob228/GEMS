@@ -1,15 +1,20 @@
 #ifndef EVENTHANDLER_H
 #define EVENTHANDLER_H
 
+#include "Base.h"
+
 #include "SFML/Graphics.hpp"
+#include "SFML/System/Vector2.hpp"
 #include "WindowHandler.h"
 
-#include <vector>
+
+
+typedef sf::Vector2i iVector2;
 
 
 enum class Event{
-    Close_Window,
-    Click_Mouse
+    CLOSE_WINDOW,
+    CLICK_MOUSE
 };
 
 
@@ -18,11 +23,11 @@ class EventHandler{
 public:
 
     
-    std::vector<Event> events;
+    std::vector<Event> _events;
 
-    void handleEvents(WindowHandler& window_handler);
+    void handleEvents(WindowHandler* windowHandler);
 
-    static void getMousePos(WindowHandler& window_handler);
+    static iVector2 getMousePos(WindowHandler* windowHandler);
 
 };
 

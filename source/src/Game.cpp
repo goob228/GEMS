@@ -6,20 +6,19 @@ void Game::respond(std::vector<Event> events)
 {
     for (const auto& event : events) {
         switch (event) {
-            case Event::Close_Window:
-                running = false;
+            case Event::CLOSE_WINDOW:
+                _running = false;
                 break;
-            case Event::Click_Mouse:
-                
-
-
-            
-                break;
-            default:
-                // Code to execute if no cases match
+            case Event::CLICK_MOUSE:
+                iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
+                #ifndef NDEBUG
+                    std::cout << "Clicked X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
+                #endif
                 break;
         }
     }
+
+    _eventHandler._events.clear();
 
 
 }
@@ -27,16 +26,16 @@ void Game::respond(std::vector<Event> events)
 
 void Game::gameLoop()
 {
+    Time time(_targetTickRate);
+    _running = true;
 
-    running = true;
+    while (_running) {
+        _eventHandler.handleEvents(_windowHandler);
+        respond(_eventHandler._events);
+        if (!_running) return;
 
-
-    while (running) {
-
-        event_handler.handleEvents(window_handler);
-        respond(event_handler.events);
-
-        window_handler.render();
+        _windowHandler->render();
+        time.wait();
     }
 }
 
@@ -44,7 +43,39 @@ void Game::gameLoop()
 
 Game::Game()
 {
-    running = false;
+    _running = false;
+    _targetTickRate = 60;
+    _windowHandler = new WindowHandler(800, 800);
 }
 
-Game::~Game() {}
+Game::~Game()
+{
+    delete _windowHandler;
+    _windowHandler = nullptr;
+}
+
+
+
+Game::Time::Time()
+{
+    int tickRate = 60;
+    _tickDuration = std::chrono::milliseconds(1000 / tickRate);
+    _lastTime = std::chrono::steady_clock::now();
+}
+
+Game::Time::Time(unsigned int const tickRate)
+{
+    THROW_IF_ZERO(tickRate);
+    _tickDuration = std::chrono::milliseconds(1000 / tickRate);
+    _lastTime = std::chrono::steady_clock::now();
+}
+
+void Game::Time::wait()
+{
+    auto now = std::chrono::steady_clock::now();
+    auto elapsed = now - _lastTime;
+    if (elapsed < _tickDuration) {
+        std::this_thread::sleep_for(_tickDuration - elapsed);
+    }
+    _lastTime = std::chrono::steady_clock::now();
+}

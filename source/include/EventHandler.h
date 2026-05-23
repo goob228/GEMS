@@ -4,9 +4,12 @@
 #include "SFML/Graphics.hpp"
 #include "WindowHandler.h"
 
+#include <vector>
+
 
 enum class Event{
-    CloseWindow
+    Close_Window,
+    Click_Mouse
 };
 
 
@@ -14,9 +17,12 @@ class EventHandler{
 
 public:
 
+    
+    std::vector<Event> events;
 
-    static void handleEvent(WindowHandler& window_handler);
+    void handleEvents(WindowHandler& window_handler);
 
+    static void getMousePos(WindowHandler& window_handler);
 
 };
 

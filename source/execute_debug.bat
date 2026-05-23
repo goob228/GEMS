@@ -1,0 +1,3 @@
+cd ./Debug
+GEMS
+pause

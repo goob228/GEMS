@@ -18,8 +18,9 @@ private:
     bool running;
     
     WindowHandler window_handler;
+    EventHandler event_handler;
     
-
+    void respond(std::vector<Event> events);
 
     //void fillBoard();
 

@@ -13,9 +13,12 @@ void WindowHandler::render()
 {
 
 
-#ifndef NDEBUG
+#ifdef _DEBUG
     std::cout << 1 << std::endl;
 #endif
+
+    window->clear();
+        
 
 
 

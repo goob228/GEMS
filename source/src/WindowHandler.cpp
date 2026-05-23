@@ -9,7 +9,7 @@ WindowHandler::WindowHandler()
     createWindow();
 }
 
-WindowHandler::WindowHandler(unsigned int const width = 500, unsigned int const height = 500)
+WindowHandler::WindowHandler(unsigned int const width, unsigned int const height)
 {
     _width = width;
     _height = height;
@@ -26,16 +26,28 @@ WindowHandler::~WindowHandler()
     _window = nullptr;
 }
 
+void WindowHandler::fill(sf::Color color)
+{
+    _window->clear(color);
+}
+
+void WindowHandler::drawSquare(RectangleShape &shape)
+{
+    _window->draw(shape);
+}
+
+void WindowHandler::display()
+{
+    _window->display();
+}
 
 
 void WindowHandler::render()
 {
+    _window->clear(Color::Gray);
 
 
-    _window->clear();
-
-
-
+    _window->display();
 }
 
 void WindowHandler::createWindow()

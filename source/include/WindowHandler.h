@@ -2,8 +2,7 @@
 #define WINDOWHANDLER_H
 
 #include "Base.h"
-
-#include "SFML/Graphics.hpp"
+#include "SFMLtypes.h"
 
 
 
@@ -18,7 +17,11 @@ public:
     WindowHandler(unsigned int const width, unsigned int const height);
     ~WindowHandler();
 
-   
+    void fill(sf::Color color);
+    
+    void drawSquare(RectangleShape &shape);
+
+    void display();
 
     void createWindow();
 

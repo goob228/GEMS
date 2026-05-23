@@ -34,18 +34,32 @@ void Game::gameLoop()
         respond(_eventHandler._events);
         if (!_running) return;
 
-        _windowHandler->render();
+        render();
         time.wait();
     }
 }
 
+void Game::render()
+{
+    _windowHandler->fill(Color::Gray);
+    _windowHandler->drawSquare(_gridSquare);
+
+    _windowHandler->display();
+}
 
 
 Game::Game()
 {
+    int width = 600;
+    int height = 700;
+    _gridSquare = RectangleShape();
+    _gridSquare.setSize(fVector2(width,width));
+    _gridSquare.setPosition(0,height-width);
+    _gridSquare.setFillColor(Color::Black);
+
     _running = false;
     _targetTickRate = 60;
-    _windowHandler = new WindowHandler(800, 800);
+    _windowHandler = new WindowHandler(width, height);
 }
 
 Game::~Game()

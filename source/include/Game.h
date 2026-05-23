@@ -18,11 +18,13 @@ public:
 
     void gameLoop();
 
+    void render();
+
 private:
 
     void respond(std::vector<Event> events);
 
-
+    RectangleShape _gridSquare;
 
     bool _running;
     unsigned int _targetTickRate;

@@ -2,20 +2,19 @@
 #define EVENTHANDLER_H
 
 #include "Base.h"
-
-#include "SFML/Graphics.hpp"
-#include "SFML/System/Vector2.hpp"
+#include "SFMLtypes.h"
 #include "WindowHandler.h"
 
 
 
-typedef sf::Vector2i iVector2;
+
 
 
 enum class Event{
     CLOSE_WINDOW,
     CLICK_MOUSE
 };
+
 
 
 class EventHandler{

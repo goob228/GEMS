@@ -3,12 +3,13 @@
 
 #include <cassert>
 #include <stdexcept> 
-
+#include <queue>
 #include <vector>
 #include <utility>
 #include <memory>
 #include <iostream>
 #include <random>
+#include <algorithm>
 
 
 #define THROW_IF_ZERO(value)                                                    \

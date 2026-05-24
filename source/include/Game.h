@@ -11,7 +11,10 @@
 #include <thread>
 
 
-
+enum class GameState {
+    RUNNING,
+    PAUSE
+};
 
 
 class Game {
@@ -34,6 +37,7 @@ private:
     * Essentials
     */
     bool _running;
+    GameState _gameState;
     unsigned int _targetTickRate;
     WindowHandler* _windowHandler;
     EventHandler _eventHandler;

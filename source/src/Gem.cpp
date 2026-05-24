@@ -18,6 +18,7 @@ Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2*
     _animPosition = fVector2(0,0);
     _defaultAnimPosition = *defaultAnimPosition;
     _shape = RectangleShape();
+    _colorEnum = colorEnum;
     _shape.setFillColor(getColor(colorEnum));
 }
 
@@ -28,7 +29,6 @@ Color Gem::getColor(DefColor colorEnum)
         case DefColor::BLUE:     return GameColor::Blue;
         case DefColor::CYAN:     return GameColor::Cyan;
         case DefColor::GREEN:    return GameColor::Green;
-        case DefColor::HAZEL:    return GameColor::Hazel;
         case DefColor::PURPLE:   return GameColor::Purple;
         case DefColor::YELLOW:   return GameColor::Yellow;
         case DefColor::ORANGE:   return GameColor::Orange;

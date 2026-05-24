@@ -3,13 +3,12 @@
 
 #include "SFMLtypes.h"
 
-int const DefColorCount = 10;
+int const DefColorCount = 9;
 enum class DefColor{
     RED,
     BLUE,
     CYAN,
     GREEN,
-    HAZEL,
     PURPLE,
     YELLOW,
     ORANGE,

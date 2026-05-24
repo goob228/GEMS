@@ -18,6 +18,11 @@ void EventHandler::handleEvents(WindowHandler* windowHandler)
                 _events.push_back(Event::CLICK_MOUSE);
             }   
         }
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Escape) {
+                _events.push_back(Event::CLICK_ESC);
+            }
+        }
     }
 }
 

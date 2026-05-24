@@ -30,12 +30,17 @@ void Game::respond(std::vector<Event> events)
                 _running = false;
                 break;
             case Event::CLICK_MOUSE:
-                iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
-                _grid->updateSelected(mousePos);
+                if (_gameState == GameState::RUNNING) {
+                    iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
+                    _grid->updateSelected(mousePos);
                 #ifndef NDEBUG
                     std::cout << "Clicked X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
                     std::cout << "Selected X: " << _grid->_selected.x << " Y: " << _grid->_selected.y << std::endl;
                 #endif
+                }
+                break;
+            case Event::CLICK_ESC:
+                _gameState = (_gameState == GameState::RUNNING) ? GameState::PAUSE : GameState::RUNNING;
                 break;
         }
     }
@@ -50,14 +55,15 @@ void Game::gameLoop()
     _grid->initializeBoard();
     Time time(_targetTickRate);
     _running = true;
+    _gameState = GameState::RUNNING;
     
 
     while (_running) {
         _eventHandler.handleEvents(_windowHandler);
         respond(_eventHandler._events);
-        if (!_running) return;
 
-        update();
+        if (_gameState == GameState::RUNNING) update();
+
         render();
         time.wait();
     }

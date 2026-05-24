@@ -25,12 +25,19 @@ private:
 
     Gem* createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition);
     DefColor generateRandomColor();
+    void raiseGems(std::vector<iVector2>& toRemove);
+    bool hasClusterAt(int x, int y) const;
+    bool wouldMatchAfterSwap(iVector2& first, iVector2& second);
     std::vector<iVector2> findClustersToRemove();
+    void swapGems(int x1, int y1, int x2, int y2);
     void swapGems(iVector2& first, iVector2& second);
+    void recreateGem(int x, int y);
     bool areNeighbours(iVector2& first, iVector2& second);
+    void updateAnimCounter();
 
-    int gridAnimDuration;
-    int gridAnimCounter;
+    int _gridAnimDuration;
+    int _gridAnimCounter;
+    bool _falling;
     int _gridDimension;
     float _cellSize;
     iVector2 _selected;

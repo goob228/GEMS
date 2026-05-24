@@ -23,8 +23,8 @@ public:
 
 private:
 
-    Gem* createGem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color);
-    Color generateRandomColor();
+    Gem* createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition);
+    DefColor generateRandomColor();
     void swapGems(iVector2& first, iVector2& second);
     bool areNeighbours(iVector2& first, iVector2& second);
 

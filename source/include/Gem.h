@@ -28,7 +28,7 @@ class Gem{
 public:
 
     Gem();
-    Gem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color);
+    Gem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, DefColor colorEnum);
     
     void update();
     void setPosition(fVector2& position);
@@ -40,6 +40,7 @@ public:
 
 private:
     
+    Color getColor(DefColor colorEnum);
     void updateAnimState();
     void updateShapePosition();
 
@@ -50,7 +51,7 @@ private:
     fVector2 _animPosition;
     fVector2 _defaultAnimPosition;
 
-    Color _color;
+    DefColor _colorEnum;
     RectangleShape _shape;
 };
 

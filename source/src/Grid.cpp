@@ -44,41 +44,29 @@ void Grid::initializeBoard()
     _gems.resize(_gridDimension, std::vector<Gem*>(_gridDimension));
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
-            Color color = generateRandomColor();
             fVector2 position = fVector2(row * cellSize, col * cellSize) + gridPosition;
             fVector2 defaultAnimPosition = fVector2(0, -cellSize*(_gridDimension+3));
-            _gems[row][col] = createGem(60, &position, &defaultAnimPosition, &color);
+            _gems[row][col] = createGem(60, &position, &defaultAnimPosition, generateRandomColor());
             _gems[row][col]->_shape.setSize(fVector2(cellSize,cellSize));
             _gems[row][col]->startAnimation();
         }
     }
 }
 
-Gem* Grid::createGem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color)
+Gem* Grid::createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition)
 {
-    Gem* gemptr = new Gem(defaultAnimState, position, defaultAnimPosition, color);
+    Gem* gemptr = new Gem(defaultAnimState, position, defaultAnimPosition, colorEnum);
     return gemptr;
 }
 
-Color Grid::generateRandomColor()
+DefColor Grid::generateRandomColor()
 {
 
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<int> dist(0, DefColorCount-1);
-    switch (static_cast<DefColor>(dist(gen))) {
-        case DefColor::RED:      return GameColor::Red;
-        case DefColor::BLUE:     return GameColor::Blue;
-        case DefColor::CYAN:     return GameColor::Cyan;
-        case DefColor::GREEN:    return GameColor::Green;
-        case DefColor::HAZEL:    return GameColor::Hazel;
-        case DefColor::PURPLE:   return GameColor::Purple;
-        case DefColor::YELLOW:   return GameColor::Yellow;
-        case DefColor::ORANGE:   return GameColor::Orange;
-        case DefColor::MAGENTA:  return GameColor::Magenta;
-        case DefColor::DARKGREEN:return GameColor::Darkgreen;
-        default: return GameColor::White;
-    }
+    return static_cast<DefColor>(dist(gen));
+    
 }
 
 void Grid::swapGems(iVector2& first, iVector2& second)
@@ -96,14 +84,8 @@ void Grid::swapGems(iVector2& first, iVector2& second)
 
 bool Grid::areNeighbours(iVector2& first, iVector2& second)
 {
-    int dx = first.x - second.x;
-    int dy = first.y - second.y;
-    
-    dx = MY_ABS(dx);
-    dy = MY_ABS(dy);
 
-    bool answer = (dx + dy == 1);
-    return answer;
+    return (std::abs(first.x - second.x) + std::abs(first.y - second.y) == 1);
 }
 
 

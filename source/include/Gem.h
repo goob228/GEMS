@@ -45,7 +45,7 @@ private:
 
     int _animState;
     int _defaultAnimState;
-
+    
     fVector2 _position;
     fVector2 _animPosition;
     fVector2 _defaultAnimPosition;

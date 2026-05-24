@@ -5,9 +5,11 @@ Game::Game()
     int width = 600;
     int height = 700;
 
-    _selectedID = iVector2(-1,-1);
+    
 
     _gridDimension = 10;
+    _cellSize = width/_gridDimension;
+    _selected = iVector2(-1,-1);
     _gridSquare = RectangleShape();
     _gridSquare.setSize(fVector2(width,width));
     _gridSquare.setPosition(0,height-width);
@@ -33,19 +35,17 @@ Game::~Game()
 
 void Game::initializeBoard()
 {
+    float cellSize = _cellSize;
     fVector2 gridPosition = _gridSquare.getPosition();
-    float width = _gridSquare.getSize().x;
     _gems.resize(_gridDimension, std::vector<Gem*>(_gridDimension));
-    float cellSize = width/_gridDimension;
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
             Color color = generateRandomColor();
-            fVector2 position = fVector2(col * cellSize, row * cellSize) + gridPosition;
-            fVector2 defaultAnimPosition = fVector2(0, -cellSize*20);
+            fVector2 position = fVector2(row * cellSize, col * cellSize) + gridPosition;
+            fVector2 defaultAnimPosition = fVector2(0, -cellSize*(_gridDimension+3));
             _gems[row][col] = createGem(60, &position, &defaultAnimPosition, &color);
             _gems[row][col]->_shape.setSize(fVector2(cellSize,cellSize));
             _gems[row][col]->startAnimation();
-            //gameBoard[row][col]->setPosition(col * cellSize, row * cellSize);
         }
     }
 }
@@ -86,15 +86,39 @@ void Game::respond(std::vector<Event> events)
                 break;
             case Event::CLICK_MOUSE:
                 iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
+                setSelected(mousePos);
+                if (_selected.x != -1){
+                    _gems[_selected.x][_selected.y]->startAnimation();
+                }
                 #ifndef NDEBUG
                     std::cout << "Clicked X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
+                    std::cout << "Selected X: " << _selected.x << " Y: " << _selected.y << std::endl;
                 #endif
                 break;
         }
     }
-
     _eventHandler._events.clear();
+}
 
+void Game::setSelected(iVector2 mousePos)
+{
+    fVector2 gridPosition = _gridSquare.getPosition();
+    int newx = mousePos.x - (int)(gridPosition.x);
+    int newy = mousePos.y - (int)(gridPosition.y);
+
+    int idx = newx / (int)(_cellSize);
+    int idy = newy / (int)(_cellSize);
+
+    // Если координата за пределами поля то она равна -1
+    idx = (newx < 0 || idx >= _gridDimension) ? -1 : idx;
+    idy = (newy < 0 || idy >= _gridDimension) ? -1 : idy;
+
+    // Если одна координата равна -1 то все будут равны -1
+    idx = (idy == -1) ? -1 : idx;
+    idy = (idx == -1) ? -1 : idy;
+
+    _selected.x = idx;
+    _selected.y = idy;
 
 }
 

@@ -31,10 +31,7 @@ void Game::respond(std::vector<Event> events)
                 break;
             case Event::CLICK_MOUSE:
                 iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
-                _grid->setSelected(mousePos);
-                if (_grid->_selected.x != -1){
-                    _grid->_gems[_grid->_selected.x][_grid->_selected.y]->startAnimation();
-                }
+                _grid->updateSelected(mousePos);
                 #ifndef NDEBUG
                     std::cout << "Clicked X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
                     std::cout << "Selected X: " << _grid->_selected.x << " Y: " << _grid->_selected.y << std::endl;

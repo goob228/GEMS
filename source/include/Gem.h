@@ -31,8 +31,8 @@ public:
     Gem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color);
     
     void update();
-    void setPosition(fVector2 position);
-    void setDefaultAnimPosition(fVector2 position);
+    void setPosition(fVector2& position);
+    void setDefaultAnimPosition(fVector2& position);
     void setDefaultAnimState(int defaultAnimState);
     void startAnimation();
 

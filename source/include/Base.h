@@ -22,3 +22,5 @@
     } while(0)
 
 #endif
+
+#define MY_ABS(value) (value > 0) ? value : -value;

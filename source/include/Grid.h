@@ -16,7 +16,8 @@ public:
     ~Grid();
 
     void initializeBoard();
-    void setSelected(iVector2& mousePos);
+    void updateSelected(iVector2& mousePos);
+    iVector2 getSelected(iVector2& mousePos);
     void update();
     void draw(WindowHandler* windowHandler);
 
@@ -24,6 +25,8 @@ private:
 
     Gem* createGem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color);
     Color generateRandomColor();
+    void swapGems(iVector2& first, iVector2& second);
+    bool areNeighbours(iVector2& first, iVector2& second);
 
     int _gridDimension;
     float _cellSize;

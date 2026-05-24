@@ -81,7 +81,46 @@ Color Grid::generateRandomColor()
     }
 }
 
-void Grid::setSelected(iVector2& mousePos)
+void Grid::swapGems(iVector2& first, iVector2& second)
+{
+    Gem* tempptr = _gems[first.x][first.y];
+    _gems[first.x][first.y] = _gems[second.x][second.y];
+    _gems[second.x][second.y] = tempptr;
+    
+    fVector2 temppos1 = _gems[first.x][first.y]->_position;
+    fVector2 temppos2 = _gems[second.x][second.y]->_position;
+    _gems[first.x][first.y]->setPosition(temppos2);
+    _gems[second.x][second.y]->setPosition(temppos1);
+    
+}
+
+bool Grid::areNeighbours(iVector2& first, iVector2& second)
+{
+    int dx = first.x - second.x;
+    int dy = first.y - second.y;
+    
+    dx = MY_ABS(dx);
+    dy = MY_ABS(dy);
+
+    bool answer = (dx + dy == 1);
+    return answer;
+}
+
+
+void Grid::updateSelected(iVector2& mousePos)
+{
+    iVector2 newSelected = getSelected(mousePos);
+    if ( newSelected.x != -1 && _selected.x != -1) {
+        if (areNeighbours(_selected, newSelected))
+            swapGems(_selected, newSelected);
+            _selected.x = -1;
+            _selected.y = -1;
+            return;
+    }
+    _selected = newSelected;
+}
+
+iVector2 Grid::getSelected(iVector2& mousePos)
 {
     fVector2 gridPosition = _gridSquare.getPosition();
     int newx = mousePos.x - (int)(gridPosition.x);
@@ -98,8 +137,9 @@ void Grid::setSelected(iVector2& mousePos)
     idx = (idy == -1) ? -1 : idx;
     idy = (idx == -1) ? -1 : idy;
 
-    _selected.x = idx;
-    _selected.y = idy;
+    iVector2 selected(idx, idy);
+
+    return selected;
 
 }
 

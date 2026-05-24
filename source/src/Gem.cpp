@@ -37,12 +37,12 @@ void Gem::updateShapePosition()
     _shape.setPosition(_animPosition + _position);
 }
 
-void Gem::setPosition(fVector2 position)
+void Gem::setPosition(fVector2& position)
 {
     _position = position;
 }
 
-void Gem::setDefaultAnimPosition(fVector2 position)
+void Gem::setDefaultAnimPosition(fVector2& position)
 {
     _defaultAnimPosition = position;
 }

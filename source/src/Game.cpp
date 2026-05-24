@@ -60,16 +60,21 @@ void Game::gameLoop()
         respond(_eventHandler._events);
         if (!_running) return;
 
+        update();
         render();
         time.wait();
     }
 }
 
+void Game::update()
+{
+    _grid->update();
+}  
+
 void Game::render()
 {
     _windowHandler->fill(GameColor::Gray);
-
-    _grid->update();
+    
     _grid->draw(_windowHandler);
 
     _windowHandler->display();

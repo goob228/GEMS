@@ -31,6 +31,7 @@ Grid::~Grid()
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
             delete _gems[row][col];
+            _gems[row][col] = nullptr;
         }
     }
 }

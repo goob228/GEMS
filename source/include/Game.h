@@ -27,9 +27,8 @@ private:
 
     void respond(std::vector<Event> events);
 
+    void update();
     void render();
-
-    void renderGrid();
     
     /*
     * Essentials

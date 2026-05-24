@@ -6,8 +6,9 @@
 
 #include <vector>
 #include <utility>
-
+#include <memory>
 #include <iostream>
+#include <random>
 
 
 #define THROW_IF_ZERO(value)                                                    \

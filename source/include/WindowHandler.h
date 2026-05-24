@@ -17,7 +17,7 @@ public:
     WindowHandler(unsigned int const width, unsigned int const height);
     ~WindowHandler();
 
-    void fill(sf::Color color);
+    void fill(Color color);
     
     void drawSquare(RectangleShape &shape);
 

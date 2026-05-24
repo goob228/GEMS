@@ -26,7 +26,7 @@ WindowHandler::~WindowHandler()
     _window = nullptr;
 }
 
-void WindowHandler::fill(sf::Color color)
+void WindowHandler::fill(Color color)
 {
     _window->clear(color);
 }
@@ -44,7 +44,7 @@ void WindowHandler::display()
 
 void WindowHandler::render()
 {
-    _window->clear(Color::Gray);
+    _window->clear(GameColor::Gray);
 
 
     _window->display();
@@ -54,7 +54,7 @@ void WindowHandler::createWindow()
 {
     assert(_width);
     assert(_height);
-    _window = new sf::RenderWindow(sf::VideoMode({_width, _height}), "SFML Window");
+    _window = new sf::RenderWindow(sf::VideoMode({_width, _height}), "Gems Game", sf::Style::Close);
     assert(_window);
 }
 

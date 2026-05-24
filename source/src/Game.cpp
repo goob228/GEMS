@@ -1,6 +1,81 @@
 #include "Game.h"
 
+Game::Game()
+{
+    int width = 600;
+    int height = 700;
 
+    _selectedID = iVector2(-1,-1);
+
+    _gridDimension = 10;
+    _gridSquare = RectangleShape();
+    _gridSquare.setSize(fVector2(width,width));
+    _gridSquare.setPosition(0,height-width);
+    _gridSquare.setFillColor(GameColor::Black);
+
+    _running = false;
+    _targetTickRate = 60;
+    _windowHandler = new WindowHandler(width, height);
+}
+
+Game::~Game()
+{
+    delete _windowHandler;
+    _windowHandler = nullptr;
+
+    for (int row = 0; row < _gridDimension; ++row){
+        for (int col = 0; col < _gridDimension; ++col){
+            delete _gems[row][col];
+        }
+    }
+}
+
+
+void Game::initializeBoard()
+{
+    fVector2 gridPosition = _gridSquare.getPosition();
+    float width = _gridSquare.getSize().x;
+    _gems.resize(_gridDimension, std::vector<Gem*>(_gridDimension));
+    float cellSize = width/_gridDimension;
+    for (int row = 0; row < _gridDimension; ++row){
+        for (int col = 0; col < _gridDimension; ++col){
+            Color color = generateRandomColor();
+            fVector2 position = fVector2(col * cellSize, row * cellSize) + gridPosition;
+            fVector2 defaultAnimPosition = fVector2(0, -cellSize*20);
+            _gems[row][col] = createGem(60, &position, &defaultAnimPosition, &color);
+            _gems[row][col]->_shape.setSize(fVector2(cellSize,cellSize));
+            _gems[row][col]->startAnimation();
+            //gameBoard[row][col]->setPosition(col * cellSize, row * cellSize);
+        }
+    }
+}
+
+Color Game::generateRandomColor()
+{
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<int> dist(0, DefColorCount-1);
+    switch (static_cast<DefColor>(dist(gen))) {
+        case DefColor::RED:      return GameColor::Red;
+        case DefColor::BLUE:     return GameColor::Blue;
+        case DefColor::CYAN:     return GameColor::Cyan;
+        case DefColor::GREEN:    return GameColor::Green;
+        case DefColor::HAZEL:    return GameColor::Hazel;
+        case DefColor::PURPLE:   return GameColor::Purple;
+        case DefColor::YELLOW:   return GameColor::Yellow;
+        case DefColor::ORANGE:   return GameColor::Orange;
+        case DefColor::MAGENTA:  return GameColor::Magenta;
+        case DefColor::DARKGREEN:return GameColor::Darkgreen;
+        default: return GameColor::White;
+    }
+}
+
+Gem* Game::createGem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color)
+{
+    Gem* gemptr = new Gem(defaultAnimState, position, defaultAnimPosition, color);
+    return gemptr;
+}
 
 void Game::respond(std::vector<Event> events)
 {
@@ -25,9 +100,11 @@ void Game::respond(std::vector<Event> events)
 
 
 void Game::gameLoop()
-{
+{   
+    initializeBoard();
     Time time(_targetTickRate);
     _running = true;
+    
 
     while (_running) {
         _eventHandler.handleEvents(_windowHandler);
@@ -41,32 +118,18 @@ void Game::gameLoop()
 
 void Game::render()
 {
-    _windowHandler->fill(Color::Gray);
+    _windowHandler->fill(GameColor::Gray);
     _windowHandler->drawSquare(_gridSquare);
+    
+    for (int row = 0; row < _gridDimension; ++row){
+        for (int col = 0; col < _gridDimension; ++col){
+            _gems[row][col]->update();
+            _windowHandler->drawSquare(_gems[row][col]->_shape);
+        }
+    }
 
     _windowHandler->display();
-}
-
-
-Game::Game()
-{
-    int width = 600;
-    int height = 700;
-    _gridSquare = RectangleShape();
-    _gridSquare.setSize(fVector2(width,width));
-    _gridSquare.setPosition(0,height-width);
-    _gridSquare.setFillColor(Color::Black);
-
-    _running = false;
-    _targetTickRate = 60;
-    _windowHandler = new WindowHandler(width, height);
-}
-
-Game::~Game()
-{
-    delete _windowHandler;
-    _windowHandler = nullptr;
-}
+}   
 
 
 

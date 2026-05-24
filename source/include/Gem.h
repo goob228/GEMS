@@ -23,7 +23,7 @@ enum class AnimType{
 
 class Gem{
 
-    friend class Game;
+    friend class Grid;
 
 public:
 
@@ -45,7 +45,7 @@ private:
 
     int _animState;
     int _defaultAnimState;
-    
+
     fVector2 _position;
     fVector2 _animPosition;
     fVector2 _defaultAnimPosition;

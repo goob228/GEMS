@@ -5,7 +5,7 @@
 #include "SFMLtypes.h"
 #include "WindowHandler.h"
 #include "EventHandler.h"
-#include "Gem.h"
+#include "Grid.h"
 
 #include <chrono>
 #include <thread>
@@ -25,16 +25,11 @@ public:
 
 private:
 
-    void initializeBoard();
-
-    Color generateRandomColor();
-    Gem* createGem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, Color* color);
-
-    void setSelected(iVector2 mousePos);
-
     void respond(std::vector<Event> events);
 
     void render();
+
+    void renderGrid();
     
     /*
     * Essentials
@@ -47,11 +42,8 @@ private:
     /*
     * Gem Related
     */
-    int _gridDimension;
-    float _cellSize;
-    iVector2 _selected;
-    RectangleShape _gridSquare;
-    std::vector<std::vector<Gem*>> _gems;
+    Grid* _grid;
+    
     
 
     class Time {

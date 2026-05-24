@@ -5,6 +5,8 @@ Grid::Grid()
     int width = 600;
     int height = 700;
 
+    _gridAnimDuration = 30;
+    _gridAnimCounter = 0;
     _gridDimension = 10;
     _cellSize = width/_gridDimension;
     _selected = iVector2(-1,-1);
@@ -17,6 +19,8 @@ Grid::Grid()
 
 Grid::Grid(int const width, int const height)
 {
+    _gridAnimDuration = 30;
+    _gridAnimCounter = 0;
     _gridDimension = 10;
     _cellSize = width/_gridDimension;
     _selected = iVector2(-1,-1);
@@ -46,7 +50,7 @@ void Grid::initializeBoard()
         for (int col = 0; col < _gridDimension; ++col){
             fVector2 position = fVector2(row * cellSize, col * cellSize) + gridPosition;
             fVector2 defaultAnimPosition = fVector2(0, -cellSize*(_gridDimension+3));
-            _gems[row][col] = createGem(60, &position, &defaultAnimPosition, generateRandomColor());
+            _gems[row][col] = createGem(_gridAnimDuration, generateRandomColor(), &position, &defaultAnimPosition);
             _gems[row][col]->_shape.setSize(fVector2(cellSize,cellSize));
             _gems[row][col]->startAnimation();
         }
@@ -55,7 +59,7 @@ void Grid::initializeBoard()
 
 Gem* Grid::createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition)
 {
-    Gem* gemptr = new Gem(defaultAnimState, position, defaultAnimPosition, colorEnum);
+    Gem* gemptr = new Gem(defaultAnimState, colorEnum, position, defaultAnimPosition);
     return gemptr;
 }
 
@@ -68,6 +72,52 @@ DefColor Grid::generateRandomColor()
     return static_cast<DefColor>(dist(gen));
     
 }
+/*
+std::vector<iVector2> Grid::findClustersToRemove() {
+    int rows = _gridDimension;
+    int cols = _gridDimension;
+    
+
+    std::vector<std::vector<bool>> visited(rows, std::vector<bool>(cols, false));
+    std::vector<iVector2> toRemove;
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (visited[i][j] || _gems[i][j] == nullptr) continue;
+
+            DefColor color = _gems[i][j]->_colorEnum;
+            std::vector<iVector2> cluster;
+            std::queue<iVector2> q;
+            q.push({i, j});
+            visited[i][j] = true;
+
+            while (!q.empty()) {
+                auto [x, y] = q.front(); q.pop();
+                cluster.push_back({x, y});
+
+                // 4 соседа (вверх, вниз, влево, вправо)
+                int dx[] = {1, -1, 0, 0};
+                int dy[] = {0, 0, 1, -1};
+                for (int d = 0; d < 4; ++d) {
+                    int nx = x + dx[d];
+                    int ny = y + dy[d];
+                    if (nx >= 0 && nx < rows && ny >= 0 && ny < cols &&
+                        !visited[nx][ny] && _gems[nx][ny] != nullptr &&
+                        _gems[nx][ny]->_colorEnum == color) {
+                        visited[nx][ny] = true;
+                        q.push({nx, ny});
+                    }
+                }
+            }
+
+            // Если в кластере 3 или более гема – добавляем все его координаты в список на удаление
+            if (cluster.size() >= 3) {
+                toRemove.insert(toRemove.end(), cluster.begin(), cluster.end());
+            }
+        }
+    }
+    return toRemove;
+}*/
 
 void Grid::swapGems(iVector2& first, iVector2& second)
 {
@@ -79,6 +129,10 @@ void Grid::swapGems(iVector2& first, iVector2& second)
     fVector2 temppos2 = _gems[second.x][second.y]->_position;
     _gems[first.x][first.y]->setPosition(temppos2);
     _gems[second.x][second.y]->setPosition(temppos1);
+    fVector2 temppos3 = temppos1 - temppos2 + _gems[first.x][first.y]->getCurrentAnimPosition();
+    fVector2 temppos4 = temppos2 - temppos1 + _gems[second.x][second.y]->getCurrentAnimPosition();
+    _gems[first.x][first.y]->setDefaultAnimPosition(temppos3);
+    _gems[second.x][second.y]->setDefaultAnimPosition(temppos4);
     
 }
 
@@ -93,11 +147,14 @@ void Grid::updateSelected(iVector2& mousePos)
 {
     iVector2 newSelected = getSelected(mousePos);
     if ( newSelected.x != -1 && _selected.x != -1) {
-        if (areNeighbours(_selected, newSelected))
+        if (areNeighbours(_selected, newSelected)) {
             swapGems(_selected, newSelected);
+            _gems[_selected.x][_selected.y]->startAnimation();
+            _gems[newSelected.x][newSelected.y]->startAnimation();
             _selected.x = -1;
             _selected.y = -1;
             return;
+        }
     }
     _selected = newSelected;
 }

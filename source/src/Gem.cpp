@@ -10,7 +10,7 @@ Gem::Gem()
     _shape = RectangleShape();
 }
 
-Gem::Gem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, DefColor colorEnum)
+Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition)
 {
     _animState = 0;
     _defaultAnimState = defaultAnimState;
@@ -87,5 +87,9 @@ void Gem::updateAnimState()
         _animState--;
         _animPosition = _defaultAnimPosition*((float)(_animState)/(float)(_defaultAnimState));
     }
-    
+}
+
+fVector2 Gem::getCurrentAnimPosition()
+{
+    return _animPosition;
 }

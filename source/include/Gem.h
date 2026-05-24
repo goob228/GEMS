@@ -28,13 +28,15 @@ class Gem{
 public:
 
     Gem();
-    Gem(int defaultAnimState, fVector2* position, fVector2* defaultAnimPosition, DefColor colorEnum);
+    Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition);
     
     void update();
     void setPosition(fVector2& position);
     void setDefaultAnimPosition(fVector2& position);
     void setDefaultAnimState(int defaultAnimState);
     void startAnimation();
+
+    fVector2 getCurrentAnimPosition();
 
     
 

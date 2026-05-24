@@ -56,6 +56,10 @@ private:
     private:
         std::chrono::steady_clock::duration _tickDuration;
         std::chrono::steady_clock::time_point _lastTime;
+        std::chrono::steady_clock::duration _secondDuration;
+        std::chrono::steady_clock::duration _forTPSCheck;
+        int _tickCount;
+        int _tickPerSec;
     };
 
 

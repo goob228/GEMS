@@ -84,6 +84,10 @@ Game::Time::Time()
     int tickRate = 60;
     _tickDuration = std::chrono::milliseconds(1000 / tickRate);
     _lastTime = std::chrono::steady_clock::now();
+    _secondDuration = std::chrono::milliseconds(1000);
+    _forTPSCheck = std::chrono::milliseconds(0);
+    _tickCount = 0;
+    _tickPerSec = 0;
 }
 
 Game::Time::Time(unsigned int const tickRate)
@@ -91,14 +95,31 @@ Game::Time::Time(unsigned int const tickRate)
     THROW_IF_ZERO(tickRate);
     _tickDuration = std::chrono::milliseconds(1000 / tickRate);
     _lastTime = std::chrono::steady_clock::now();
+    _secondDuration = std::chrono::milliseconds(1000);
+    _forTPSCheck = std::chrono::milliseconds(0);
+    _tickCount = 0;
+    _tickPerSec = 0;
 }
 
 void Game::Time::wait()
 {
     auto now = std::chrono::steady_clock::now();
     auto elapsed = now - _lastTime;
+    _forTPSCheck += elapsed;
+    _tickCount++;
+    if (_forTPSCheck > _secondDuration){
+        _tickPerSec = _tickCount;
+        _tickCount = 0;
+        _forTPSCheck = std::chrono::milliseconds(0);
+        #ifndef NDEBUG
+        std::cout << "TPS: " << _tickPerSec << std::endl;
+        #endif
+    }
+    
+    
     if (elapsed < _tickDuration) {
         std::this_thread::sleep_for(_tickDuration - elapsed);
-    }
+    }    
+
     _lastTime = std::chrono::steady_clock::now();
 }

@@ -87,6 +87,9 @@ void Grid::raiseGems(std::vector<iVector2>& toRemove)
 {
     
     std::vector<iVector2> sorted = toRemove;
+    std::sort(sorted.begin(), sorted.end(),
+              [](const iVector2& a, const iVector2& b) { return a.y < b.y; });
+
 
     for (const iVector2& pos : sorted) {
         int x = pos.x;

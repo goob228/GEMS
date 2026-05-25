@@ -10,7 +10,7 @@ Gem::Gem()
     _shape = RectangleShape();
 }
 
-Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition)
+Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType animType)
 {
     _animState = 0;
     _defaultAnimState = defaultAnimState;
@@ -18,6 +18,7 @@ Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2*
     _animPosition = fVector2(0,0);
     _defaultAnimPosition = *defaultAnimPosition;
     _shape = RectangleShape();
+    _animType = animType;
     _colorEnum = colorEnum;
     _shape.setFillColor(getColor(colorEnum));
 }
@@ -73,6 +74,28 @@ void Gem::startAnimation()
     _animPosition = _defaultAnimPosition;
 }
 
+float Gem::applyEasingFunc(float t)
+{
+    switch (_animType){
+        case AnimType::LINEAR: {
+            return t;
+        }
+        case AnimType::QUAD_IN: {
+            return t * t;
+        }
+        case AnimType::QUAD_OUT: {
+            return (1.0f - (1.0f - t) * (1.0f - t));
+        }
+        case AnimType::EASE_IN_OUT: {
+            return t * t * t * (t * (t * 6 - 15) + 10);;
+        }
+        case AnimType::OVERSHOOT: {
+            const float overshoot = 1.2f;
+            return (overshoot + 1.0f) * t * t * t - overshoot * t * t;
+        }
+    }
+    return t;
+}
 
 void Gem::updateAnimState()
 {
@@ -85,7 +108,9 @@ void Gem::updateAnimState()
     }
     if (_animState > 0){
         _animState--;
-        _animPosition = _defaultAnimPosition*((float)(_animState)/(float)(_defaultAnimState));
+        float t = (float)(_animState)/(float)(_defaultAnimState);
+        _animPosition = _defaultAnimPosition * applyEasingFunc(t);
+        
     }
 }
 

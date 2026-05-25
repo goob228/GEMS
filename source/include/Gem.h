@@ -17,7 +17,11 @@ enum class DefColor{
 };
 
 enum class AnimType{
-    LERP
+    LINEAR,
+    QUAD_IN,
+    QUAD_OUT,
+    EASE_IN_OUT,
+    OVERSHOOT
 };
 
 class Gem{
@@ -27,7 +31,7 @@ class Gem{
 public:
 
     Gem();
-    Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition);
+    Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType animType);
     
     void update();
     void setPosition(fVector2& position);
@@ -44,9 +48,11 @@ private:
     Color getColor(DefColor colorEnum);
     void updateAnimState();
     void updateShapePosition();
+    float applyEasingFunc(float t);
 
     int _animState;
     int _defaultAnimState;
+    AnimType _animType;
 
     fVector2 _position;
     fVector2 _animPosition;

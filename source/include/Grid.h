@@ -23,7 +23,8 @@ public:
 
 private:
 
-    Gem* createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition);
+    Gem* createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, 
+        AnimType animType = AnimType::QUAD_IN);
     DefColor generateRandomColor();
     void raiseGems(std::vector<iVector2>& toRemove);
     bool hasClusterAt(int x, int y) const;

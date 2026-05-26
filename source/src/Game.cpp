@@ -33,10 +33,6 @@ void Game::respond(std::vector<Event> events)
                 if (_gameState == GameState::RUNNING) {
                     iVector2 mousePos = EventHandler::getMousePos(_windowHandler);
                     _grid->updateSelected(mousePos);
-                #ifndef NDEBUG
-                    std::cout << "Clicked X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
-                    std::cout << "Selected X: " << _grid->_selected.x << " Y: " << _grid->_selected.y << std::endl;
-                #endif
                 }
                 break;
             case Event::CLICK_ESC:
@@ -120,9 +116,6 @@ void Game::Time::wait()
         _tickPerSec = _tickCount;
         _tickCount = 0;
         _forTPSCheck = std::chrono::milliseconds(0);
-        #ifndef NDEBUG
-        std::cout << "TPS: " << _tickPerSec << std::endl;
-        #endif
     }
     
     

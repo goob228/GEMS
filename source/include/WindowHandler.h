@@ -23,6 +23,9 @@ public:
 
     void drawCircle(CircleShape &shape);
 
+    void drawText(const std::string& text, const sf::Vector2f& position,
+        unsigned int characterSize = 22, sf::Color color = sf::Color::White);
+
     void display();
 
     void createWindow();
@@ -30,6 +33,12 @@ public:
     void render();
 
 private:
+
+    // вызвать один раз
+    void loadFont(const std::string& fontPath);
+
+    sf::Font _g_font;
+    bool _g_fontLoaded = false;
 
     unsigned int _width;
     unsigned int _height;

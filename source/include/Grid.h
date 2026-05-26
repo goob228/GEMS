@@ -21,6 +21,8 @@ public:
     void update();
     void draw(WindowHandler* windowHandler);
 
+    int _score = 0;
+
 private:
 
     std::shared_ptr<Gem> createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, 
@@ -36,6 +38,8 @@ private:
     void recreateGem(int const x, int const y);
     bool areNeighbours(iVector2& first, iVector2& second);
     void updateAnimCounter();
+    
+
 
     int _gridAnimDuration;
     int _gridAnimCounter;

@@ -107,6 +107,7 @@ void Grid::raiseGems()
         for (int col = 0; col < _gridDimension; ++col){
             if (_gems[row][col]->_toRemove) {
                 sorted.push_back(iVector2(row,col));
+                _score+=1;
             }
         }
     }
@@ -131,6 +132,8 @@ void Grid::raiseGems()
             swapGems(x, col, x, col-1);
             _gems[x][col]->startAnimation();
             _gems[x][col-1]->startAnimation();
+            _gems[x][col]->resetShapeOutline();
+            _gems[x][col-1]->resetShapeOutline();
             _gridAnimCounter = _gridAnimDuration;
         }
         recreateGem(x,0);

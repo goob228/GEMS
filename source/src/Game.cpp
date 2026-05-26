@@ -77,7 +77,10 @@ void Game::update()
 void Game::render()
 {
     _windowHandler->fill(GameColor::Gray);
-    
+    std::string mytxt = "Score: " + std::to_string(_grid->_score);
+    mytxt += "\nBlack circle = Bomb\nWhite circle = Paint";
+    _windowHandler->drawText(mytxt,{10.f,10.f});
+
     _grid->draw(_windowHandler);
 
     _windowHandler->display();

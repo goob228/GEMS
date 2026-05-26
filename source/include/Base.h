@@ -10,6 +10,7 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <string>
 
 
 #define THROW_IF_ZERO(value)                                                    \

@@ -49,4 +49,20 @@ if(WIN32)
             COMMENT "Copying ${DLL} in ${TARGET_DIR}"
         )
     endforeach()
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Release")
+        get_filename_component(MINGW_BIN_DIR "${CMAKE_CXX_COMPILER}" DIRECTORY)
+
+        # Список файлов для копирования
+        set(MINGW_DLLS 
+            libgcc_s_seh-1.dll
+            libstdc++-6.dll 
+            libwinpthread-1.dll
+        )
+        foreach(DLL ${MINGW_DLLS})
+            file(COPY "${MINGW_BIN_DIR}/${DLL}"
+                DESTINATION "${CMAKE_BINARY_DIR}")
+        endforeach()
+    endif()
+
 endif()

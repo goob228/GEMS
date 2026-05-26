@@ -25,9 +25,9 @@ public:
     
     std::vector<Event> _events;
 
-    void handleEvents(WindowHandler* windowHandler);
+    void handleEvents(WindowHandler* const windowHandler);
 
-    static iVector2 getMousePos(WindowHandler* windowHandler);
+    static iVector2 getMousePos(WindowHandler* const windowHandler);
 
 };
 

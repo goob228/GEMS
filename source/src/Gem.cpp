@@ -10,7 +10,7 @@ Gem::Gem()
     _shape = RectangleShape();
 }
 
-Gem::Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, fVector2* position, fVector2* defaultAnimPosition)
+Gem::Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, fVector2* const position, fVector2* const defaultAnimPosition)
 {
     _animState = 0;
     _defaultAnimState = defaultAnimState;
@@ -23,7 +23,7 @@ Gem::Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const an
     _shape.setFillColor(getColor(colorEnum));
 }
 
-Color Gem::getColor(DefColor colorEnum)
+Color Gem::getColor(DefColor const colorEnum)
 {
     switch (colorEnum) {
         case DefColor::RED:      return GameColor::Red;

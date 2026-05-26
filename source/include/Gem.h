@@ -27,16 +27,17 @@ enum class AnimType{
 class Gem{
 
     friend class Grid;
+    friend class GemBomb;
 
 public:
 
     Gem();
-    Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType animType);
+    Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, fVector2* const position, fVector2* const defaultAnimPosition);
     
     void update();
     void setPosition(fVector2& position);
     void setDefaultAnimPosition(fVector2& position);
-    void setDefaultAnimState(int defaultAnimState);
+    void setDefaultAnimState(int const defaultAnimState);
     void startAnimation();
 
     fVector2 getCurrentAnimPosition();
@@ -45,10 +46,10 @@ public:
 
 private:
     
-    Color getColor(DefColor colorEnum);
+    Color getColor(DefColor const colorEnum);
     void updateAnimState();
     void updateShapePosition();
-    float applyEasingFunc(float t);
+    float applyEasingFunc(float const t);
 
     int _animState;
     int _defaultAnimState;

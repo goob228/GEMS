@@ -2,7 +2,7 @@
 
 
 
-void EventHandler::handleEvents(WindowHandler* windowHandler)
+void EventHandler::handleEvents(WindowHandler* const windowHandler)
 {   
 
     sf::Event event;
@@ -26,7 +26,7 @@ void EventHandler::handleEvents(WindowHandler* windowHandler)
     }
 }
 
-iVector2 EventHandler::getMousePos(WindowHandler* windowHandler)
+iVector2 EventHandler::getMousePos(WindowHandler* const windowHandler)
 {
     iVector2 pos = sf::Mouse::getPosition(*(windowHandler->_window));
 

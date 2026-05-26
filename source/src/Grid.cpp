@@ -32,19 +32,21 @@ Grid::Grid(int const width, int const height)
 
 Grid::~Grid()
 {
+    /*
     for (int row = 0; row < _gems.size(); ++row){
         for (int col = 0; col < _gems[0].size(); ++col){
             delete _gems[row][col];
             _gems[row][col] = nullptr;
         }
     }
+        */
 }
 
 
 void Grid::initializeBoard()
 {
     fVector2 gridPosition = _gridSquare.getPosition();
-    _gems.resize(_gridDimension, std::vector<Gem*>(_gridDimension));
+    _gems.resize(_gridDimension, std::vector<std::shared_ptr<Gem>>(_gridDimension));
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
             fVector2 position = fVector2(row * _cellSize, col * _cellSize) + gridPosition;
@@ -56,16 +58,17 @@ void Grid::initializeBoard()
     _gridAnimCounter = _gridAnimDuration;
 }
 
-Gem* Grid::createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType const animType)
+std::shared_ptr<Gem> Grid::createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType const animType)
 {
     Gem* gemptr = new Gem(defaultAnimState, colorEnum, animType, position, defaultAnimPosition);
     gemptr->_shape.setSize(fVector2(_cellSize,_cellSize));
-    return gemptr;
+    std::shared_ptr<Gem> sharedptr(gemptr);
+    return sharedptr;
 }
 
-void Grid::recreateGem(int x, int y)
+void Grid::recreateGem(int const x, int const y)
 {
-    delete _gems[x][y];
+    //delete _gems[x][y];
     fVector2 position = fVector2(x*_cellSize,y*_cellSize) + _gridSquare.getPosition();
     fVector2 defaultAnimPosition(0, -_cellSize*(_gridDimension+3));
     _gems[x][y] = createGem(_gridAnimDuration, generateRandomColor(), &position, &defaultAnimPosition);
@@ -111,10 +114,10 @@ void Grid::raiseGems(std::vector<iVector2>& toRemove)
 }
 
 
-bool Grid::hasClusterAt(int x, int y) const {
+bool Grid::hasClusterAt(int const x, int const y) const {
     if (x < 0 || y < 0 || x >= (int)_gems.size() || y >= (int)_gems[0].size())
         return false;
-    Gem* start = _gems[x][y];
+    std::shared_ptr<Gem> start = _gems[x][y];
     if (!start) return false;
 
     DefColor targetColor = start->_colorEnum;
@@ -157,21 +160,19 @@ bool Grid::hasClusterAt(int x, int y) const {
 }
 
 bool Grid::wouldMatchAfterSwap(iVector2& first, iVector2& second) {
-    // Сохраняем оригиналы
-    Gem* gem1 = _gems[first.x][first.y];
-    Gem* gem2 = _gems[second.x][second.y];
-    if (!gem1 || !gem2) return false;
+
+    if (!_gems[first.x][first.y] || !_gems[second.x][second.y]) {
+        return false;
+    }
 
     //временный обмен
-    _gems[first.x][first.y] = gem2;
-    _gems[second.x][second.y] = gem1;
+    std::swap(_gems[first.x][first.y], _gems[second.x][second.y]);
 
     // проверяем, появился ли кластер хотя бы у одной из двух клеток
     bool match = hasClusterAt(first.x,first.y) || hasClusterAt(second.x,second.y);
 
     // откат обмена
-    _gems[first.x][first.y] = gem1;
-    _gems[second.x][second.y] = gem2;
+    std::swap(_gems[first.x][first.y], _gems[second.x][second.y]);
 
     return match;
 }
@@ -217,9 +218,7 @@ std::vector<iVector2> Grid::findClustersToRemove() {
 
 void Grid::swapGems(iVector2& first, iVector2& second)
 {
-    Gem* tempptr = _gems[first.x][first.y];
-    _gems[first.x][first.y] = _gems[second.x][second.y];
-    _gems[second.x][second.y] = tempptr;
+    std::swap(_gems[first.x][first.y], _gems[second.x][second.y]);
     
     fVector2 temppos1 = _gems[first.x][first.y]->_position;
     fVector2 temppos2 = _gems[second.x][second.y]->_position;
@@ -232,9 +231,9 @@ void Grid::swapGems(iVector2& first, iVector2& second)
     
 }
 
-void Grid::swapGems(int x1, int y1, int x2, int y2)
+void Grid::swapGems(int const x1, int const y1, int const x2, int const y2)
 {
-    Gem* tempptr = _gems[x1][y1];
+    std::shared_ptr<Gem> tempptr = _gems[x1][y1];
     _gems[x1][y1] = _gems[x2][y2];
     _gems[x2][y2] = tempptr;
     

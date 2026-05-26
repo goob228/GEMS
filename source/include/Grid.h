@@ -23,16 +23,16 @@ public:
 
 private:
 
-    Gem* createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, 
-        AnimType animType = AnimType::QUAD_IN);
+    std::shared_ptr<Gem> createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, 
+        AnimType const animType = AnimType::QUAD_IN);
     DefColor generateRandomColor();
     void raiseGems(std::vector<iVector2>& toRemove);
-    bool hasClusterAt(int x, int y) const;
+    bool hasClusterAt(int const x, int const y) const;
     bool wouldMatchAfterSwap(iVector2& first, iVector2& second);
     std::vector<iVector2> findClustersToRemove();
-    void swapGems(int x1, int y1, int x2, int y2);
+    void swapGems(int const x1, int const y1, int const x2, int const y2);
     void swapGems(iVector2& first, iVector2& second);
-    void recreateGem(int x, int y);
+    void recreateGem(int const x, int const y);
     bool areNeighbours(iVector2& first, iVector2& second);
     void updateAnimCounter();
 
@@ -43,7 +43,7 @@ private:
     float _cellSize;
     iVector2 _selected;
     RectangleShape _gridSquare;
-    std::vector<std::vector<Gem*>> _gems;
+    std::vector<std::vector<std::shared_ptr<Gem>>> _gems;
 };
 
 

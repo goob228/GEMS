@@ -1,20 +1,5 @@
 #include "GemPaint.h"
 
-GemPaint::GemPaint(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, 
-    fVector2* const position, fVector2* const defaultAnimPosition)
-{
-    _animState = 0;
-    _defaultAnimState = defaultAnimState;
-    _position = *position;
-    _animPosition = fVector2(0,0);
-    _defaultAnimPosition = *defaultAnimPosition;
-    _shape = RectangleShape();
-    _animType = animType;
-    _colorEnum = colorEnum;
-    _shape.setFillColor(getColor(colorEnum));
-    _specificShape = CircleShape();
-    _specificShape.setFillColor(Color::White);
-}
 
 GemPaint::GemPaint(std::shared_ptr<Gem> gemptr) : Gem(*gemptr)
 {

@@ -8,9 +8,6 @@ class GemPaint: public Gem {
 
 public:
 
-    GemPaint(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, 
-        fVector2* const position, fVector2* const defaultAnimPosition);
-
     explicit GemPaint(std::shared_ptr<Gem> gemptr);
 
     void draw(WindowHandler* windowHandler) override;

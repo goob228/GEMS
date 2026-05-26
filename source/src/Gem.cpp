@@ -83,6 +83,17 @@ Color Gem::getColor(DefColor const colorEnum)
     }
 }
 
+void Gem::setShapeOutline()
+{
+    _shape.setOutlineThickness(4.0f);
+    _shape.setOutlineColor(Color::White);
+}
+
+
+void Gem::resetShapeOutline()
+{
+    _shape.setOutlineThickness(0.0f);
+}
 
 
 void Gem::update()

@@ -44,6 +44,8 @@ public:
     void setDefaultAnimPosition(fVector2& position);
     void setDefaultAnimState(int const defaultAnimState);
     void startAnimation();
+    void setShapeOutline();
+    void resetShapeOutline();
     virtual void onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& gems, int const row, int const col);
     virtual void draw(WindowHandler* windowHandler);
 

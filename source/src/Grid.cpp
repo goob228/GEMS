@@ -112,7 +112,7 @@ void Grid::raiseGems()
     }
 
     if (sorted.empty()) return;
-
+    _falling = true;
 
     std::sort(sorted.begin(), sorted.end(),
               [](const iVector2& a, const iVector2& b) { return a.y < b.y; });
@@ -257,9 +257,7 @@ void Grid::swapGems(iVector2& first, iVector2& second)
 
 void Grid::swapGems(int const x1, int const y1, int const x2, int const y2)
 {
-    std::shared_ptr<Gem> tempptr = _gems[x1][y1];
-    _gems[x1][y1] = _gems[x2][y2];
-    _gems[x2][y2] = tempptr;
+    std::swap(_gems[x1][y1], _gems[x2][y2]);
     
     fVector2 temppos1 = _gems[x1][y1]->_position;
     fVector2 temppos2 = _gems[x2][y2]->_position;
@@ -282,18 +280,37 @@ bool Grid::areNeighbours(iVector2& first, iVector2& second)
 void Grid::updateSelected(iVector2& mousePos)
 {
     iVector2 newSelected = getSelected(mousePos);
+    if (_selected == newSelected || _falling){
+        if (_selected.x != -1) {
+            _gems[_selected.x][_selected.y]->resetShapeOutline();
+        }
+        _selected.x = -1;
+        _selected.y = -1;
+        
+        return;
+    }
     if ( newSelected.x != -1 && _selected.x != -1) {
         if (!_falling && areNeighbours(_selected, newSelected) && wouldMatchAfterSwap(_selected, newSelected)) {
             swapGems(_selected, newSelected);
             _gems[_selected.x][_selected.y]->startAnimation();
             _gems[newSelected.x][newSelected.y]->startAnimation();
+            _gems[_selected.x][_selected.y]->resetShapeOutline();
+            _gems[newSelected.x][newSelected.y]->resetShapeOutline();
             _gridAnimCounter = _gridAnimDuration;
             _selected.x = -1;
             _selected.y = -1;
             return;
         }
     }
+    if (_selected.x != -1) {
+        _gems[_selected.x][_selected.y]->resetShapeOutline();
+    }
+    if (newSelected.x != -1) {
+        _gems[newSelected.x][newSelected.y]->setShapeOutline();
+    }
+    
     _selected = newSelected;
+    
 }
 
 iVector2 Grid::getSelected(iVector2& mousePos)
@@ -328,14 +345,13 @@ void Grid::updateAnimCounter()
 void Grid::update()
 {      
     if (_gridAnimCounter == 0) {
-        std::vector<iVector2> toRemove = findClustersToRemove();
         _falling = false;
+        std::vector<iVector2> toRemove = findClustersToRemove();
         if (!toRemove.empty()){
-            _falling = true;
             onMatchedGems(toRemove);
         }
     }
-
+    
     raiseGems();
 
     for (int row = 0; row < _gridDimension; ++row){
@@ -354,7 +370,11 @@ void Grid::draw(WindowHandler* windowHandler)
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
             _gems[row][col]->draw(windowHandler);
-            
         }
+    }
+
+    //отдельно рисуем выбранный гем, чтобы его внешняя обводка перекрывала остальных
+    if (_selected.x != -1) {
+        _gems[_selected.x][_selected.y]->draw(windowHandler);
     }
 }

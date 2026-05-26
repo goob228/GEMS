@@ -26,7 +26,8 @@ private:
     std::shared_ptr<Gem> createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, 
         AnimType const animType = AnimType::QUAD_IN);
     DefColor generateRandomColor();
-    void raiseGems(std::vector<iVector2>& toRemove);
+    void onMatchedGems(std::vector<iVector2>& toRemove);
+    void raiseGems();
     bool hasClusterAt(int const x, int const y) const;
     bool wouldMatchAfterSwap(iVector2& first, iVector2& second);
     std::vector<iVector2> findClustersToRemove();

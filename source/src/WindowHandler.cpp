@@ -36,6 +36,11 @@ void WindowHandler::drawSquare(RectangleShape &shape)
     _window->draw(shape);
 }
 
+void WindowHandler::drawCircle(CircleShape &shape)
+{
+    _window->draw(shape);
+}
+
 void WindowHandler::display()
 {
     _window->display();

@@ -1,7 +1,10 @@
 #ifndef GEM_H
 #define GEM_H
 
+#include "Base.h"
 #include "SFMLtypes.h"
+#include "WindowHandler.h"
+
 
 int const DefColorCount = 9;
 enum class DefColor{
@@ -24,32 +27,39 @@ enum class AnimType{
     OVERSHOOT
 };
 
+
+
 class Gem{
 
     friend class Grid;
-    friend class GemBomb;
 
 public:
 
     Gem();
     Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, fVector2* const position, fVector2* const defaultAnimPosition);
-    
+    explicit Gem(std::shared_ptr<Gem> gemptr);
+
     void update();
     void setPosition(fVector2& position);
     void setDefaultAnimPosition(fVector2& position);
     void setDefaultAnimState(int const defaultAnimState);
     void startAnimation();
+    virtual void onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& gems, int const row, int const col);
+    virtual void draw(WindowHandler* windowHandler);
 
     fVector2 getCurrentAnimPosition();
 
-    
+    static int const onMatchedChance = 4; //Шанс того что появиться бонус; -1 -> 0% случаев; 10 -> 100% случаев
 
-private:
+    bool _toRemove = false;
+
+protected:
+
     
+    virtual void updateShapePosition();
     Color getColor(DefColor const colorEnum);
-    void updateAnimState();
-    void updateShapePosition();
-    float applyEasingFunc(float const t);
+
+    
 
     int _animState;
     int _defaultAnimState;
@@ -61,6 +71,14 @@ private:
 
     DefColor _colorEnum;
     RectangleShape _shape;
+
+private:
+    
+    
+    void updateAnimState();
+    float applyEasingFunc(float const t);
+
+    
 };
 
 #endif

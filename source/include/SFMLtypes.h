@@ -12,6 +12,8 @@ typedef sf::Vector2f fVector2;
 
 typedef sf::RectangleShape RectangleShape;
 
+typedef sf::CircleShape CircleShape;
+
 typedef sf::Color Color;
 
 namespace GameColor {

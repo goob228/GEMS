@@ -1,4 +1,5 @@
 #include "Gem.h"
+#include "GemBomb.h"
 
 Gem::Gem()
 {
@@ -21,6 +22,45 @@ Gem::Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const an
     _animType = animType;
     _colorEnum = colorEnum;
     _shape.setFillColor(getColor(colorEnum));
+}
+
+Gem::Gem(std::shared_ptr<Gem> gemptr) : Gem(*gemptr)
+{
+}
+
+void Gem::draw(WindowHandler* windowHandler)
+{
+    windowHandler->drawSquare(_shape);
+}
+
+void Gem::onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& gems, int const row, int const col)
+{
+    
+    int const sizex = gems.size();
+    if (sizex == 0) return;
+    int const sizey = gems[0].size();
+
+    static std::random_device rd2;
+    static std::mt19937 gen2(rd2());
+    std::uniform_int_distribution<> distCreate(0, 10);
+    if (distCreate(gen2) <= onMatchedChance){
+        std::uniform_int_distribution<> distRow(-3, 3);
+        std::uniform_int_distribution<> distCol(-3, 3);
+        
+        int const newx = distRow(gen2) + row;
+        int const newy = distCol(gen2) + col;
+        if (newx < 0 || newx >= sizex || newy < 0 || newy >= sizey) return;
+
+        std::uniform_int_distribution<> typeOfGem(0, 0);
+        int const typeofgem = typeOfGem(gen2);
+        if (typeofgem == 0) {
+            gems[newx][newy] = std::make_shared<GemBomb>(gems[newx][newy]);
+        }
+    }
+    
+
+
+
 }
 
 Color Gem::getColor(DefColor const colorEnum)

@@ -86,10 +86,34 @@ DefColor Grid::generateRandomColor()
     
 }
 
-void Grid::raiseGems(std::vector<iVector2>& toRemove)
+
+
+void Grid::onMatchedGems(std::vector<iVector2>& toRemove)
+{
+    std::vector<iVector2> sorted = toRemove;
+
+    for (const iVector2& pos : sorted) {
+        _gems[pos.x][pos.y]->_toRemove = true;
+        _gems[pos.x][pos.y]->onMatched(_gems,pos.x,pos.y);
+    }
+}
+
+void Grid::raiseGems()
 {
     
-    std::vector<iVector2> sorted = toRemove;
+    std::vector<iVector2> sorted;
+
+    for (int row = 0; row < _gridDimension; ++row){
+        for (int col = 0; col < _gridDimension; ++col){
+            if (_gems[row][col]->_toRemove) {
+                sorted.push_back(iVector2(row,col));
+            }
+        }
+    }
+
+    if (sorted.empty()) return;
+
+
     std::sort(sorted.begin(), sorted.end(),
               [](const iVector2& a, const iVector2& b) { return a.y < b.y; });
 
@@ -308,10 +332,11 @@ void Grid::update()
         _falling = false;
         if (!toRemove.empty()){
             _falling = true;
-            raiseGems(toRemove);
+            onMatchedGems(toRemove);
         }
     }
 
+    raiseGems();
 
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
@@ -328,7 +353,8 @@ void Grid::draw(WindowHandler* windowHandler)
     
     for (int row = 0; row < _gridDimension; ++row){
         for (int col = 0; col < _gridDimension; ++col){
-            windowHandler->drawSquare(_gems[row][col]->_shape);
+            _gems[row][col]->draw(windowHandler);
+            
         }
     }
 }

@@ -21,6 +21,8 @@ public:
     
     void drawSquare(RectangleShape &shape);
 
+    void drawCircle(CircleShape &shape);
+
     void display();
 
     void createWindow();

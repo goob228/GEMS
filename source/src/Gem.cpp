@@ -10,7 +10,7 @@ Gem::Gem()
     _shape = RectangleShape();
 }
 
-Gem::Gem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType animType)
+Gem::Gem(int const defaultAnimState, DefColor const colorEnum, AnimType const animType, fVector2* position, fVector2* defaultAnimPosition)
 {
     _animState = 0;
     _defaultAnimState = defaultAnimState;
@@ -63,7 +63,7 @@ void Gem::setDefaultAnimPosition(fVector2& position)
     _defaultAnimPosition = position;
 }
 
-void Gem::setDefaultAnimState(int defaultAnimState)
+void Gem::setDefaultAnimState(int const defaultAnimState)
 {
     _defaultAnimState = defaultAnimState;
 }
@@ -74,7 +74,7 @@ void Gem::startAnimation()
     _animPosition = _defaultAnimPosition;
 }
 
-float Gem::applyEasingFunc(float t)
+float Gem::applyEasingFunc(float const t)
 {
     switch (_animType){
         case AnimType::LINEAR: {

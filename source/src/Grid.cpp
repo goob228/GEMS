@@ -56,9 +56,9 @@ void Grid::initializeBoard()
     _gridAnimCounter = _gridAnimDuration;
 }
 
-Gem* Grid::createGem(int defaultAnimState, DefColor colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType animType)
+Gem* Grid::createGem(int const defaultAnimState, DefColor const colorEnum, fVector2* position, fVector2* defaultAnimPosition, AnimType const animType)
 {
-    Gem* gemptr = new Gem(defaultAnimState, colorEnum, position, defaultAnimPosition, animType);
+    Gem* gemptr = new Gem(defaultAnimState, colorEnum, animType, position, defaultAnimPosition);
     gemptr->_shape.setSize(fVector2(_cellSize,_cellSize));
     return gemptr;
 }

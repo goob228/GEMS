@@ -49,9 +49,11 @@ public:
 
     fVector2 getCurrentAnimPosition();
 
-    static int const onMatchedChance = 4; //Шанс того что появиться бонус; -1 -> 0% случаев; 10 -> 100% случаев
+    static int const onMatchedChance = 5; //Шанс того что появиться бонус; -1 -> 0% случаев; 10 -> 100% случаев
 
     bool _toRemove = false;
+    DefColor _colorEnum;
+    RectangleShape _shape;
 
 protected:
 
@@ -69,8 +71,6 @@ protected:
     fVector2 _animPosition;
     fVector2 _defaultAnimPosition;
 
-    DefColor _colorEnum;
-    RectangleShape _shape;
 
 private:
     

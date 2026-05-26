@@ -1,5 +1,6 @@
 #include "Gem.h"
 #include "GemBomb.h"
+#include "GemPaint.h"
 
 Gem::Gem()
 {
@@ -51,10 +52,13 @@ void Gem::onMatched(std::vector<std::vector<std::shared_ptr<Gem>>>& gems, int co
         int const newy = distCol(gen2) + col;
         if (newx < 0 || newx >= sizex || newy < 0 || newy >= sizey) return;
 
-        std::uniform_int_distribution<> typeOfGem(0, 0);
+        std::uniform_int_distribution<> typeOfGem(0, 1);
         int const typeofgem = typeOfGem(gen2);
         if (typeofgem == 0) {
             gems[newx][newy] = std::make_shared<GemBomb>(gems[newx][newy]);
+        } else if (typeofgem == 1) {
+            gems[newx][newy]->_colorEnum = _colorEnum;
+            gems[newx][newy] = std::make_shared<GemPaint>(gems[newx][newy]);
         }
     }
     

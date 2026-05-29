@@ -13,4 +13,4 @@
 Средство сборки MinGW с gcc и MinGW MakeFiles
 Последнюю версию можно установить с помощью MinGW installer https://github.com/niXman/mingw-builds-binaries
 
-
+ 

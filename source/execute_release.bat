@@ -1,0 +1,3 @@
+cd ./Release
+GEMS
+pause

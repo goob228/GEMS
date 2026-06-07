@@ -1,0 +1,5 @@
+/build
+/build_debug
+/source/Debug
+/source/Release
+source/MSVC_build_release.bat
